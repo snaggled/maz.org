@@ -1,0 +1,7 @@
+bin/*
+log/*.log
+tmp/**/*
+doc/api
+doc/app
+vendor/gems/ruby/1.8/*
+!vendor/gems/ruby/1.8/cache
