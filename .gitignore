@@ -5,4 +5,4 @@ tmp/restart.txt
 log/*.log
 config/database.yml
 vendor/bundler_gems/*
-!vendor/bundler_gems/cache/
+!vendor/bundler_gems/ruby/1.8/cache/
