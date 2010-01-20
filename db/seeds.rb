@@ -4,4 +4,4 @@
 # Examples:
 #   
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Daley', :city => cities.first)
+#   Major.create(:name => 'Daley', :city => cities.first)
