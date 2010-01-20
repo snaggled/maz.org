@@ -1,3 +1,8 @@
+bin/*
+db/*.sqlite3
 tmp/**/*
+tmp/restart.txt
 log/*.log
 config/database.yml
+vendor/bundler_gems/*
+!vendor/bundler_gems/cache/

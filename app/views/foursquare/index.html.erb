@@ -1,0 +1,13 @@
+<h1>Most recent FourSquare checkins</h1>
+
+<% if @checkins.present? %>
+  <ol>
+    <% @checkins.each do |checkin| %>
+      <li><%= checkin.inspect %></li>
+    <% end %>
+  </ol>
+<% else %>
+  <p>
+    Foursquare appears to be down at the moment.
+  </p>
+<% end %>
