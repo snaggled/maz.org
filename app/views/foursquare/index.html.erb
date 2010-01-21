@@ -3,7 +3,7 @@
 <% if @checkins.present? %>
   <ol>
     <% @checkins.each do |checkin| %>
-      <li><%= checkin.inspect %></li>
+      <li><%=h checkin[:venue] %> at <%=h checkin[:when] %></li>
     <% end %>
   </ol>
 <% else %>
