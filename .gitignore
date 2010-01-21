@@ -1,3 +1,4 @@
+build_options.yml
 bin/*
 db/*.sqlite3
 tmp/**/*

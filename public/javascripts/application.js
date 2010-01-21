@@ -13,9 +13,9 @@ jQuery.fn.checkin_map = function(options) {
     for (var i=0; i<checkins.length; i++) {
       var checkin = checkins[i];
       str += "<li>";
-      str += checkin.venue;
+      str += checkin.venue.name;
       str += " at ";
-      str += checkin.when;
+      str += Date.parse(checkin.checked_in_at).toString("h:m tt on MMM d");
       str += "</li>";
     }
     str += "</ol>";

@@ -1,10 +1,11 @@
 class FoursquareController < ApplicationController
 
   def checkins
-    @checkins = MyFoursquare.new.history
+    @checkins = FoursquareCheckin.recent_checkins
     respond_to do |format|
-      format.json {render :json => @checkins.to_json}
-      format.html {render :layout => !request.xhr?}
+      format.json do
+        render :json => @checkins.to_json(:include => :venue)
+      end
     end
   end
 end
