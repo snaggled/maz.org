@@ -1,3 +1,6 @@
+google:
+  api_key: none
+
 foursquare:
   user: bcm@maz.org
   password: @replace@

@@ -1,13 +1,11 @@
-<h1>Most recent FourSquare checkins</h1>
+<h1>maz.org</h1>
 
-<% if @checkins.present? %>
-  <ol>
-    <% @checkins.each do |checkin| %>
-      <li><%=h checkin[:venue] %> at <%=h checkin[:when] %></li>
-    <% end %>
-  </ol>
-<% else %>
-  <p>
-    Foursquare appears to be down at the moment.
-  </p>
+<div id="checkins"></div>
+
+<% content_for(:head) do %>
+  <title>maz.org</title>
+<% end %>
+
+<% content_for(:script) do %>
+  $('div#checkins').load('<%= checkins_path %>');
 <% end %>

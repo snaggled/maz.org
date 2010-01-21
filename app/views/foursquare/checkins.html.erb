@@ -1,0 +1,13 @@
+<h2>Most recent FourSquare checkins</h2>
+
+<% if @checkins.present? %>
+  <ol>
+    <% @checkins.each do |checkin| %>
+      <li><%=h checkin[:venue] %> at <%=h checkin[:when].strftime("%H:%M on %b %d") %></li>
+    <% end %>
+  </ol>
+<% else %>
+  <p>
+    Foursquare appears to be down at the moment.
+  </p>
+<% end %>

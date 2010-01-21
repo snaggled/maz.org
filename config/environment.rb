@@ -11,5 +11,5 @@ Rails::Initializer.module_eval do
 end
 
 Rails::Initializer.run do |config|
-  config.time_zone = 'UTC'
+  config.time_zone = 'Eastern Time (US & Canada)'
 end

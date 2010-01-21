@@ -1,6 +1,7 @@
 class FoursquareController < ApplicationController
 
-  def index
+  def checkins
     @checkins = MyFoursquare.new.checkins
+    render :layout => !request.xhr?
   end
 end
