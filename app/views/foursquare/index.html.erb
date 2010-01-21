@@ -7,5 +7,7 @@
 <% end %>
 
 <% content_for(:script) do %>
-  $('div#checkins').load('<%= checkins_path %>');
+  $('div#checkins').checkin_map({
+    url: '<%= checkins_path %>'
+  });
 <% end %>

@@ -13,7 +13,8 @@ class MyFoursquare
       out[:venue] = c['venue']['name'] if c.has_key?('venue')
       out[:shout] = c['shout'] if c.has_key?('shout')
       if c.has_key?('created')
-        out[:when] = DateTime::parse(c['created']).in_time_zone
+        out[:when] = DateTime::parse(c['created']).in_time_zone.
+          strftime("%H:%M on %b %d")
       end
       out
     end
