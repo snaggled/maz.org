@@ -1,10 +1,12 @@
 <h1>maz.org</h1>
 
-<div id="checkins"></div>
+<div id="checkins" style="width: 390px; height: 450px;"></div>
 
 <% content_for(:head) do %>
   <title>maz.org</title>
   <%= javascript_include_tag 'date' %>
+  <%= content_tag(:script, nil,
+        :src => 'http://maps.google.com/maps/api/js?sensor=false') %>
 <% end %>
 
 <% content_for(:script) do %>
