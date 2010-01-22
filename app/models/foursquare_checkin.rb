@@ -32,7 +32,10 @@ private
     return if ! api_response.has_key?('checkins') ||
       api_response['checkins'].nil?
 
-    api_response['checkins']['checkin'].each do |c|
+    api_checkins = api_response['checkins']['checkin']
+    api_checkins = [api_checkins] unless api_checkins.is_a?(Array)
+
+    api_checkins.each do |c|
       fs_checkin_id = c['id'].to_i
       shout = c['shout']
       checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
