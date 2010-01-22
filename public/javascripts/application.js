@@ -16,16 +16,19 @@ jQuery.fn.checkin_map = function(options) {
 }
 
 function build_checkin_map(container, checkins, settings) {
-  var element = document.getElementById(container.attr("id"));
+  if (checkins.length == 0) {
+    container.hide();
+    return;
+  }
 
   // center the map on the most recent checkin
-  // XXX: what about when there are no checkins?
-  var latlng = new google.maps.LatLng(checkins[0].venue.geolat,
+  var center = new google.maps.LatLng(checkins[0].venue.geolat,
     checkins[0].venue.geolong);
 
+  var element = document.getElementById(container.attr("id"));
   var map = new google.maps.Map(element, {
     // overridden by bounding box
-    zoom: 14, center: latlng,
+    zoom: 14, center: center,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
@@ -44,10 +47,18 @@ function build_checkin_map(container, checkins, settings) {
     var marker = new google.maps.Marker({map: map, position: latlng,
       title: checkin.venue.name});
 
-    attach_hover_listeners(checkin, marker);
+    attach_info(checkin, marker);
   }
 
   map.fitBounds(bounds);
+}
+
+function attach_info(checkin, marker) {
+  var info = new google.maps.InfoWindow({content: checkin_info(checkin)});
+
+  google.maps.event.addListener(marker, 'click', function() {
+    info.open(marker.getMap(), marker);
+  });
 }
 
 function checkin_info(checkin) {
@@ -55,13 +66,4 @@ function checkin_info(checkin) {
     checkin.venue.fs_id + '">' + checkin.venue.name + '</a>' + "<br />" +
     checkin.venue.city + ", " + checkin.venue.state + "<br />" +
     Date.parse(checkin.checked_in_at).toString("h:m tt on MMM d");
-}
-
-// when hovering over a marker, highlight the corresponding list item
-function attach_hover_listeners(checkin, marker) {
-  var info = new google.maps.InfoWindow({content: checkin_info(checkin)});
-
-  google.maps.event.addListener(marker, 'click', function() {
-    info.open(marker.getMap(), marker);
-  });
 }

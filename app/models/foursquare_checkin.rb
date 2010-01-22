@@ -8,15 +8,16 @@ class FoursquareCheckin < ActiveRecord::Base
     :include => :venue
 
   def self.recent_checkins
-    # XXX: move the caching into an external tool so that we can literally
-    # just call ten_most_recent
-    previous = ten_most_recent
-    if previous.empty?
-      pull_in_all_checkins
-    else
-      pull_in_recent_checkins_since(previous.first.fs_id)
-    end
     ten_most_recent.all
+  end
+
+  def self.load_checkins
+    previous = ten_most_recent.first
+    if previous.present?
+      pull_in_recent_checkins_since(previous.fs_id)
+    else
+      pull_in_all_checkins
+    end
   end
 
 private
@@ -36,27 +37,19 @@ private
     api_checkins = [api_checkins] unless api_checkins.is_a?(Array)
 
     api_checkins.each do |c|
-      fs_checkin_id = c['id'].to_i
-      shout = c['shout']
-      checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
-      if c.has_key?('venue')
-        v = c['venue']
-        fs_venue_id = v['id'].to_i
-        fv = FoursquareVenue.find_or_create_by_fs_id(fs_venue_id)
-        fv.name = v['name']
-        fv.address = v['address']
-        fv.crossstreet = v['crossstreet']
-        fv.city = v['city']
-        fv.state = v['state']
-        fv.zip = v['zip']
-        fv.geolat = v['geolat']
-        fv.geolong = v['geolong']
-        fv.phone = v['phone']
-        fv.save!
-      end
-
-      FoursquareCheckin.create!(:fs_id => fs_checkin_id, :shout => shout,
-        :checked_in_at => checked_in_at, :venue => fv)
+      create_from_fs(c)
     end
+  end
+
+  def self.create_from_fs(c)
+    fs_id = c['id'].to_i
+    shout = c['shout']
+    checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
+    if c.has_key?('venue')
+      venue = FoursquareVenue.find_or_create_from_fs(c['venue'])
+    end
+
+    create!(:fs_id => fs_id, :shout => shout, :checked_in_at => checked_in_at,
+      :venue => venue)
   end
 end

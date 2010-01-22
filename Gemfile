@@ -5,5 +5,6 @@ gem "rails", "2.3.5"
 gem "mysql", "2.8.1"
 gem "foursquare", "0.1.0", :path => '../Foursquare'
 gem "viva-app_config", "1.2.0"
+gem "whenever", "0.4.1"
 
 disable_system_gems
