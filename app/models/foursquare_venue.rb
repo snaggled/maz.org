@@ -1,11 +1,24 @@
-class FoursquareVenue < ActiveRecord::Base
-  set_table_name 'fs_venues'
-  has_many :checkins, :class_name => 'FoursquareCheckin',
-    :foreign_key => 'fs_venue_id', :dependent => :nullify
+class FoursquareVenue
+  include MongoMapper::Document
+
+  key :foursquare_id, String, :required => true
+  key :name, String
+  key :address, String
+  key :crossstreet, String
+  key :city, String
+  key :state, String
+  key :zip, String
+  key :geolat, Float
+  key :geolong, Float
+  key :phone, String
+
+  timestamps!
+
+  many :checkins, :class_name => 'FoursquareCheckin', :dependent => :nullify
 
   def self.find_or_create_from_fs(v)
     fs_id = v['id'].to_i
-    fv = find_or_create_by_fs_id(fs_id)
+    fv = find_or_create_by_foursquare_id(fs_id)
     fv.name = v['name']
     fv.address = v['address']
     fv.crossstreet = v['crossstreet']

@@ -1,20 +1,49 @@
-require 'my_foursquare'
+#require 'my_foursquare'
 
-class FoursquareCheckin < ActiveRecord::Base
-  set_table_name 'fs_checkins'
-  belongs_to :venue, :class_name => 'FoursquareVenue',
-    :foreign_key => 'fs_venue_id'
-  named_scope :ten_most_recent, :order => 'checked_in_at DESC', :limit => 10,
-    :include => :venue
+class FoursquareCheckin
+  include MongoMapper::Document
+
+  key :foursquare_id, String, :required => true
+  key :shout, String
+  key :checked_in_at, Time, :required => true
+
+  timestamps!
+
+  key :venue_id, ObjectId
+  belongs_to :venue, :class_name => 'FoursquareVenue'
+
+  def self.ten_most_recent
+    all(:order => 'checked_in_at DESC', :limit => 10)
+  end
 
   def self.recent_checkins
-    ten_most_recent.all
+    idx = {}
+    venue_ids = Set.new()
+
+    ten_most_recent.each do |checkin|
+      next unless checkin.venue_id.present?
+
+      venue_ids << checkin.venue_id
+
+      idx[checkin.venue_id] ||= []
+      idx[checkin.venue_id] << checkin
+    end
+
+    checkins = {}
+    FoursquareVenue.find(venue_ids.to_a).each do |venue|
+      checkins[venue.foursquare_id] ||= {}
+      checkins[venue.foursquare_id][:venue] = venue
+      checkins[venue.foursquare_id][:checkins] ||= []
+      checkins[venue.foursquare_id][:checkins] += idx[venue.id]
+    end
+
+    checkins
   end
 
   def self.load_checkins
-    previous = ten_most_recent.first
+    previous = first(:order => 'checked_in_at DESC')
     if previous.present?
-      pull_in_recent_checkins_since(previous.fs_id)
+      pull_in_recent_checkins_since(previous.foursquare_id)
     else
       pull_in_all_checkins
     end
@@ -49,7 +78,9 @@ private
       venue = FoursquareVenue.find_or_create_from_fs(c['venue'])
     end
 
-    create!(:fs_id => fs_id, :shout => shout, :checked_in_at => checked_in_at,
-      :venue => venue)
+    checkin = create!(:foursquare_id => fs_id, :shout => shout,
+      :checked_in_at => checked_in_at, :venue => venue)
+
+    checkin
   end
 end

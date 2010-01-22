@@ -15,15 +15,14 @@ jQuery.fn.checkin_map = function(options) {
   return this;
 }
 
-function build_checkin_map(container, checkins, settings) {
-  if (checkins.length == 0) {
+function build_checkin_map(container, data, settings) {
+  if (data.length == 0) {
     container.hide();
     return;
   }
 
-  // center the map on the most recent checkin
-  var center = new google.maps.LatLng(checkins[0].venue.geolat,
-    checkins[0].venue.geolong);
+  // center the map on my house
+  var center = new google.maps.LatLng(40.718634, -73.956866);
 
   var element = document.getElementById(container.attr("id"));
   var map = new google.maps.Map(element, {
@@ -34,36 +33,43 @@ function build_checkin_map(container, checkins, settings) {
 
   var bounds = new google.maps.LatLngBounds();
 
-  // add a marker for each checkin. process the checkins in
-  // chronological order since the map will autopan to the final marker
-  // opened (which we want to be the most recent checkin)
-  for (var i=checkins.length-1; i>=0; i--) {
-    var checkin = checkins[i];
+  // add a marker for each venue
+  for (var venue_id in data) {
+    var venue = data[venue_id].venue
+    var checkins = data[venue_id].checkins
 
-    var latlng = new google.maps.LatLng(checkin.venue.geolat,
-      checkin.venue.geolong);
+    var latlng = new google.maps.LatLng(venue.geolat, venue.geolong);
     bounds.extend(latlng);
 
     var marker = new google.maps.Marker({map: map, position: latlng,
-      title: checkin.venue.name});
+      title: venue.name});
 
-    attach_info(checkin, marker);
+    attach_info_window(marker, venue, checkins);
   }
 
   map.fitBounds(bounds);
 }
 
-function attach_info(checkin, marker) {
-  var info = new google.maps.InfoWindow({content: checkin_info(checkin)});
+function attach_info_window(marker, venue, checkins) {
+  var info = new google.maps.InfoWindow({
+    content: venue_info(venue, checkins)
+  });
 
   google.maps.event.addListener(marker, 'click', function() {
     info.open(marker.getMap(), marker);
   });
 }
 
-function checkin_info(checkin) {
-  return '<a target="_new" href="http://foursquare.com/venue/' +
-    checkin.venue.fs_id + '">' + checkin.venue.name + '</a>' + "<br />" +
-    checkin.venue.city + ", " + checkin.venue.state + "<br />" +
-    Date.parse(checkin.checked_in_at).toString("h:m tt on MMM d");
+function venue_info(venue, checkins) {
+  str = '<p><a target="_new" href="http://foursquare.com/venue/' +
+    venue.foursquare_id + '">' + venue.name + '</a><br/>' + venue.city +
+    ', ' + venue.state + '</p>'
+  str += '<ol>'
+  for (var i=0; i<checkins.length; i++) {
+    var checkin = checkins[i];
+    str += '<li>' +
+      Date.parse(checkin.checked_in_at).toString("h:m tt on MMM d") + '</li>'
+  }
+  str += '</ol>'
+  return str;
 }
