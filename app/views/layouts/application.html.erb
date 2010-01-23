@@ -5,6 +5,11 @@
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <%= stylesheet_link_tag 'base' %>
+    <%= stylesheet_link_tag 'blueprint/screen',
+                             :media => 'screen, projection' %>
+    <%= stylesheet_link_tag 'blueprint/print', :media => 'print' %>
+    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie',
+                          :media => 'screen, projection' %><![endif]-->
     <script type="text/javascript" src="http://www.google.com/jsapi?key=<%=h AppConfig.google.api_key %>"></script>
     <% javascript_tag do %>
       google.load("jquery", "1.3.2");
@@ -19,6 +24,12 @@
     <% end %>
   </head>
   <body>
-    <%= yield %>
+    <div id="header" class="container">
+      <h1>maz.org</h1>
+    </div>
+
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,6 +1,10 @@
-<h1>maz.org</h1>
-
 <div id="checkins" style="width: 390px; height: 450px;"></div>
+
+<div class="prepend-top">
+  <%= link_to(image_tag('poweredby-foursquare.png',
+        :alt => '', :size => '150x24'), 'http://foursquare.com/',
+        :target => '_new') %>
+</div>
 
 <% content_for(:head) do %>
   <title>maz.org</title>
