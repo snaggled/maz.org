@@ -16,6 +16,10 @@ class FoursquareCheckin
     all(:order => 'checked_in_at DESC', :limit => 10)
   end
 
+  def self.most_recent
+    first(:order => 'checked_in_at DESC')
+  end
+
   def self.recent_checkins
     idx = {}
     venue_ids = Set.new()
@@ -41,7 +45,7 @@ class FoursquareCheckin
   end
 
   def self.load_checkins
-    previous = first(:order => 'checked_in_at DESC')
+    previous = most_recent
     if previous.present?
       pull_in_recent_checkins_since(previous.foursquare_id)
     else
