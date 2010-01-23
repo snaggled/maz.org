@@ -11,5 +11,6 @@ Rails::Initializer.module_eval do
 end
 
 Rails::Initializer.run do |config|
+  config.frameworks -= [:active_record, :action_mailer, :active_resource]
   config.time_zone = 'Eastern Time (US & Canada)'
 end
