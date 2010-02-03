@@ -1,9 +1,19 @@
-<div id="checkins" style="width: 390px; height: 450px;"></div>
+<div class="span-14">
+  Other stuff goes here
+</div>
 
-<div class="prepend-top">
-  <%= link_to(image_tag('poweredby-foursquare.png',
-        :alt => '', :size => '150x24'), 'http://foursquare.com/',
-        :target => '_new') %>
+<div class="span-10 last">
+  <h2>Recent checkins</h2>
+
+  <div id="checkin-map" style="width: 390px; height: 310px;"></div>
+
+  <div id="checkin-list"></div>
+
+  <div class="prepend-top">
+    <%= link_to(image_tag('poweredby-foursquare.png',
+          :alt => 'Powered by Foursquare', :size => '150x24'),
+          'http://foursquare.com/', :target => '_new') %>
+  </div>
 </div>
 
 <% content_for(:head) do %>
@@ -14,7 +24,7 @@
 <% end %>
 
 <% content_for(:script) do %>
-  $('div#checkins').checkin_map({
+  $('div#checkin-map').checkin_map({
     url: '<%= checkins_path %>'
   });
 <% end %>

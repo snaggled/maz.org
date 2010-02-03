@@ -67,8 +67,13 @@ function venue_info(venue, checkins) {
   str += '<ol>'
   for (var i=0; i<checkins.length; i++) {
     var checkin = checkins[i];
-    str += '<li>' +
-      Date.parse(checkin.checked_in_at).toString("h:m tt on MMM d") + '</li>'
+    str += '<li>'
+    str += Date.parse(checkin.checked_in_at).
+      toString("h:m tt on dddd, MMMM dS")
+    if (checkin.shout != null) {
+      str += '<br/>"' + checkin.shout + '"'
+    }
+    str += '</li>'
   }
   str += '</ol>'
   return str;
