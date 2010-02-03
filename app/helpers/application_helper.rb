@@ -1,7 +1,11 @@
 module ApplicationHelper
 
   def activity_summary(activity)
-    foursquare_checkin_summary(activity)
+    if activity.respond_to?(:foursquare_id)
+      foursquare_checkin_summary(activity)
+    else
+      ""
+    end
   end
 
   def foursquare_checkin_summary(checkin)
@@ -14,10 +18,10 @@ module ApplicationHelper
       :class => 'foursquare-checkin-location')
 
     # 6:29 pm on Sat, Jan 23rd
-    ci_t = checkin.checked_in_at.strftime("%I:%M %p").
+    ci_t = checkin.occurred_at.strftime("%I:%M %p").
       gsub(/^0(\d)/, '\1').downcase
-    ci_d = checkin.checked_in_at.
-      strftime("%a, %b #{checkin.checked_in_at.day.ordinalize}")
+    ci_d = checkin.occurred_at.
+      strftime("%a, %b #{checkin.occurred_at.day.ordinalize}")
     checkin_time = content_tag(:span, "#{ci_t} on #{ci_d}",
       :class => 'foursquare-checkin-time')
 

@@ -1,5 +1,5 @@
 class FoursquareVenue
-  include MongoMapper::Document
+  include MongoMapper::EmbeddedDocument
 
   key :foursquare_id, String, :required => true
   key :name, String
@@ -12,27 +12,10 @@ class FoursquareVenue
   key :geolong, Float
   key :phone, String
 
-  timestamps!
+  def self.new_from_fs(v)
+    fv = FoursquareVenue.new
 
-  many :checkins, :class_name => 'FoursquareCheckin', :dependent => :nullify
-
-  def self.find_or_create_from_fs(v)
-    fs_id = v['id']
-
-    fv = find_by_foursquare_id(fs_id)
-    unless fv
-      logger.debug("creating venue #{fs_id}")
-      fv = FoursquareVenue.new(:foursquare_id => fs_id)
-    end
-
-    fill_venue(fv, v)
-    fv.save!
-
-    fv
-  end
-
-private
-  def self.fill_venue(fv, v)
+    fv.foursquare_id = v['id']
     fv.name = v['name']
     fv.address = v['address']
     fv.crossstreet = v['crossstreet']
@@ -42,5 +25,7 @@ private
     fv.geolat = v['geolat']
     fv.geolong = v['geolong']
     fv.phone = v['phone']
+
+    fv
   end
 end
