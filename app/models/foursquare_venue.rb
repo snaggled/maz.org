@@ -17,8 +17,22 @@ class FoursquareVenue
   many :checkins, :class_name => 'FoursquareCheckin', :dependent => :nullify
 
   def self.find_or_create_from_fs(v)
-    fs_id = v['id'].to_i
-    fv = find_or_create_by_foursquare_id(fs_id)
+    fs_id = v['id']
+
+    fv = find_by_foursquare_id(fs_id)
+    unless fv
+      logger.debug("creating venue #{fs_id}")
+      fv = FoursquareVenue.new(:foursquare_id => fs_id)
+    end
+
+    fill_venue(fv, v)
+    fv.save!
+
+    fv
+  end
+
+private
+  def self.fill_venue(fv, v)
     fv.name = v['name']
     fv.address = v['address']
     fv.crossstreet = v['crossstreet']
@@ -28,7 +42,5 @@ class FoursquareVenue
     fv.geolat = v['geolat']
     fv.geolong = v['geolong']
     fv.phone = v['phone']
-    fv.save!
-    fv
   end
 end

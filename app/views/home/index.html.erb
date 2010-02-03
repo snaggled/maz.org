@@ -1,0 +1,9 @@
+<ul id="activity-stream">
+  <% @activities.each do |activity| %>
+    <li id="<%=h activity.id %>"><%= activity_summary(activity) %>
+  <% end %>
+</ul>
+
+<% content_for(:head) do %>
+  <title>maz.org</title>
+<% end %>

@@ -3,20 +3,20 @@
 class FoursquareCheckin
   include MongoMapper::Document
 
+  attr_accessor :venue
+
   key :foursquare_id, String, :required => true
   key :shout, String
   key :checked_in_at, Time, :required => true
+  key :venue_id, ObjectId
 
   timestamps!
 
-  key :venue_id, ObjectId
-  belongs_to :venue, :class_name => 'FoursquareVenue'
-
-  def self.ten_most_recent
-    all(:order => 'checked_in_at DESC', :limit => 10)
+  def self.most_recent
+    all(:order => 'checked_in_at DESC', :limit => 25)
   end
 
-  def self.most_recent
+  def self.first_most_recent
     first(:order => 'checked_in_at DESC')
   end
 
@@ -24,28 +24,28 @@ class FoursquareCheckin
     idx = {}
     venue_ids = Set.new()
 
-    ten_most_recent.each do |checkin|
+    checkins = []
+    most_recent.each do |checkin|
       next unless checkin.venue_id.present?
-
       venue_ids << checkin.venue_id
 
+      checkins << checkin
+
       idx[checkin.venue_id] ||= []
-      idx[checkin.venue_id] << checkin
+      idx[checkin.venue_id] << checkins.length - 1
     end
 
-    checkins = {}
     FoursquareVenue.find(venue_ids.to_a).each do |venue|
-      checkins[venue.foursquare_id] ||= {}
-      checkins[venue.foursquare_id][:venue] = venue
-      checkins[venue.foursquare_id][:checkins] ||= []
-      checkins[venue.foursquare_id][:checkins] += idx[venue.id]
+      idx[venue.id].each do |i|
+        checkins[i].venue = venue
+      end
     end
 
     checkins
   end
 
   def self.load_checkins
-    previous = most_recent
+    previous = first_most_recent
     if previous.present?
       pull_in_recent_checkins_since(previous.foursquare_id)
     else
@@ -55,10 +55,12 @@ class FoursquareCheckin
 
 private
   def self.pull_in_all_checkins
+    logger.debug("getting all checkins")
     store_checkins(MyFoursquare.api.history)
   end
 
   def self.pull_in_recent_checkins_since(sinceid)
+    logger.debug("getting checkins since checkin #{sinceid}")
     store_checkins(MyFoursquare.api.history(:sinceid => sinceid))
   end
 
@@ -75,15 +77,17 @@ private
   end
 
   def self.create_from_fs(c)
-    fs_id = c['id'].to_i
+    fs_id = c['id']
     shout = c['shout']
     checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
     if c.has_key?('venue')
       venue = FoursquareVenue.find_or_create_from_fs(c['venue'])
+      venue_id = venue.id if venue
     end
 
+    logger.debug("creating checkin #{fs_id}")
     checkin = create!(:foursquare_id => fs_id, :shout => shout,
-      :checked_in_at => checked_in_at, :venue => venue)
+      :checked_in_at => checked_in_at, :venue_id => venue_id)
 
     checkin
   end
