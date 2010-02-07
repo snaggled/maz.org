@@ -17,7 +17,7 @@ private
   def self.timeline(options={})
     url = "http://twitter.com/statuses/user_timeline.atom?id=bcm&count=10"
     url << "&since_id=#{options[:sinceid]}" if options.has_key?(:sinceid)
-    Feedzirra::Feed.fetch_and_parse(url)
+    Feedzirra::Feed.fetch_and_parse(url, :user_agent => 'maz.org')
   end
 
   def self.pull_in_all_tweets
@@ -37,9 +37,7 @@ private
   end
 
   def self.create_from_atom(entry)
-    entry.id =~ /\/(\d+)$/
-    twitter_id = $1
-
+    twitter_id = entry.id.split(/\//).last
     text = entry.content.sanitize.gsub(/^bcm:\s*/, '')
 
     logger.debug("creating tweet #{twitter_id}")

@@ -2,35 +2,45 @@ module ApplicationHelper
 
   def activity_summary(activity)
     if activity.respond_to?(:foursquare_id)
-      foursquare_checkin_summary(activity)
+      svc = 'foursquare'
+      summary = foursquare_checkin_summary(activity)
     elsif activity.respond_to?(:twitter_id)
-      tweet_summary(activity)
+      svc = 'twitter'
+      summary = tweet_summary(activity)
+    elsif activity.respond_to?(:google_id)
+      svc = 'google'
+      summary = google_link_summary(activity)
+    end
+
+    if summary
+      icon = image_tag("icons/#{svc}.ico", :size => '16x16', :class => 'activity-icon')
+      at = content_tag(:span, "at #{occurred_at(activity.occurred_at)}", :class => 'small')
+      [icon, summary, at].join(' ')
     else
       ""
     end
   end
 
   def foursquare_checkin_summary(checkin)
-    icon = image_tag('icons/foursquare.ico', :size => '16x16', :class => 'activity-icon')
-
     venue_link = link_to(h(checkin.venue.name), "http://foursquare.com/venue/#{checkin.venue.foursquare_id}",
       :target => '_new', :class => 'foursquare-checkin-venue')
 
     venue_location = content_tag(:span, "#{h(checkin.venue.city)}, #{h(checkin.venue.state)}",
       :class => 'foursquare-checkin-location')
 
-    at = occurred_at(checkin.occurred_at)
-
-    out = "#{icon} Checked in at #{venue_link} in #{venue_location} at #{at}"
+    out = "Checked in at #{venue_link} in #{venue_location}"
     out << " (#{checkin.shout})" if checkin.shout.present?
 
     out
   end
 
   def tweet_summary(tweet)
-    icon = image_tag('icons/twitter.ico', :size => '16x16', :class => 'activity-icon')
-    at = occurred_at(tweet.occurred_at)
-    "#{icon} Tweeted \"#{tweet.text}\" at #{at}"
+    "Tweeted \"#{tweet.text}\""
+  end
+
+  def google_link_summary(link)
+    link = link_to(link.text, link.url, :target => '_new')
+    "Shared #{link}"
   end
 
   def occurred_at(dt, options={})
