@@ -3,6 +3,8 @@ module ApplicationHelper
   def activity_summary(activity)
     if activity.respond_to?(:foursquare_id)
       foursquare_checkin_summary(activity)
+    elsif activity.respond_to?(:twitter_id)
+      tweet_summary(activity)
     else
       ""
     end
@@ -17,14 +19,24 @@ module ApplicationHelper
     venue_location = content_tag(:span, "#{h(checkin.venue.city)}, #{h(checkin.venue.state)}",
       :class => 'foursquare-checkin-location')
 
-    # 6:29 pm on Sat, Jan 23rd
-    ci_t = checkin.occurred_at.strftime("%I:%M %p").gsub(/^0(\d)/, '\1').downcase
-    ci_d = checkin.occurred_at.strftime("%a, %b #{checkin.occurred_at.day.ordinalize}")
-    checkin_time = content_tag(:span, "#{ci_t} on #{ci_d}", :class => 'foursquare-checkin-time')
+    at = occurred_at(checkin.occurred_at)
 
-    out = "#{icon} Checked in at #{venue_link} in #{venue_location} at #{checkin_time}"
-    out << " (#{shout})" if checkin.shout.present?
+    out = "#{icon} Checked in at #{venue_link} in #{venue_location} at #{at}"
+    out << " (#{checkin.shout})" if checkin.shout.present?
 
     out
+  end
+
+  def tweet_summary(tweet)
+    icon = image_tag('icons/twitter.ico', :size => '16x16', :class => 'activity-icon')
+    at = occurred_at(tweet.occurred_at)
+    "#{icon} Tweeted \"#{tweet.text}\" at #{at}"
+  end
+
+  def occurred_at(dt, options={})
+    # 6:29 pm on Sat, Jan 23rd
+    t = dt.strftime("%I:%M %p").gsub(/^0(\d)/, '\1').downcase
+    d = dt.strftime("%a, %b #{dt.day.ordinalize}")
+    content_tag(:span, "#{t} on #{d}", :class => 'occurred-at')
   end
 end

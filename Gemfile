@@ -3,6 +3,7 @@ bin_path 'vendor/bundler_gems/bin'
 
 gem "rails", "2.3.5"
 gem "viva-app_config", "1.2.0"
+gem "feedzirra"
 
 # mongo
 gem "mongo", "0.18.2"
