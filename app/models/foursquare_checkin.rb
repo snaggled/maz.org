@@ -1,8 +1,15 @@
 class FoursquareCheckin < Activity
+  include ActiveSupport::Memoizable
+
   key :foursquare_id, String, :required => true
   key :shout, String
   key :venue_id, ObjectId
   key :venue, FoursquareVenue
+
+  def self.client
+    @@client ||= Foursquare.new(AppConfig.foursquare.user,
+      AppConfig.foursquare.password, :headers => {'User-Agent', 'maz.org'})
+  end
 
   def self.load_checkins
     previous = most_recent_activity
@@ -16,12 +23,12 @@ class FoursquareCheckin < Activity
 private
   def self.pull_in_all_checkins
     logger.debug("getting all checkins")
-    store_checkins(MyFoursquare.api.history)
+    store_checkins(client.history)
   end
 
   def self.pull_in_recent_checkins_since(sinceid)
     logger.debug("getting checkins since checkin #{sinceid}")
-    store_checkins(MyFoursquare.api.history(:sinceid => sinceid))
+    store_checkins(client.history(:sinceid => sinceid))
   end
 
   def self.store_checkins(api_response)
