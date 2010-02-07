@@ -1,17 +1,14 @@
 class FoursquareCheckin < Activity
-  include ActiveSupport::Memoizable
-
-  key :foursquare_id, String, :required => true
   key :shout, String
   key :venue_id, ObjectId
   key :venue, FoursquareVenue
 
-  activity_to_load :checkin
+  api_method :load_checkins
 
   def self.load_checkins
     previous = most_recent_activity
     if previous.present?
-      pull_in_recent_checkins_since(previous.foursquare_id)
+      pull_in_recent_checkins_since(previous.service_id)
     else
       pull_in_all_checkins
     end
@@ -47,20 +44,11 @@ private
   end
 
   def self.create_from_fs(c)
-    fs_id = c['id']
+    service_id = c['id']
     shout = c['shout']
     checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
-
-    logger.debug("creating checkin #{fs_id}")
-    checkin = new(:foursquare_id => fs_id, :shout => shout,
-      :occurred_at => checked_in_at)
-
-    if c.has_key?('venue')
-      checkin.venue = FoursquareVenue.new_from_fs(c['venue'])
-    end
-
-    checkin.save!
-
-    checkin
+    venue = FoursquareVenue.new_from_fs(c['venue']) if c.has_key?('venue')
+    logger.debug("creating checkin #{service_id}")
+    create!(:service_id => service_id, :shout => shout, :occurred_at => checked_in_at, :venue => venue)
   end
 end

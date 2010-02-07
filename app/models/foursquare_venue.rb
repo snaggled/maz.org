@@ -1,7 +1,7 @@
 class FoursquareVenue
   include MongoMapper::EmbeddedDocument
 
-  key :foursquare_id, String, :required => true
+  key :service_id, String, :required => true
   key :name, String
   key :address, String
   key :crossstreet, String
@@ -15,7 +15,7 @@ class FoursquareVenue
   def self.new_from_fs(v)
     fv = FoursquareVenue.new
 
-    fv.foursquare_id = v['id']
+    fv.service_id = v['id']
     fv.name = v['name']
     fv.address = v['address']
     fv.crossstreet = v['crossstreet']

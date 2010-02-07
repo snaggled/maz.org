@@ -22,7 +22,7 @@ module ApplicationHelper
   end
 
   def foursquare_checkin_summary(checkin)
-    venue_link = link_to(h(checkin.venue.name), "http://foursquare.com/venue/#{checkin.venue.foursquare_id}",
+    venue_link = link_to(h(checkin.venue.name), "http://foursquare.com/venue/#{checkin.venue.service_id}",
       :target => '_new', :class => 'foursquare-checkin-venue')
 
     venue_location = content_tag(:span, "#{h(checkin.venue.city)}, #{h(checkin.venue.state)}",

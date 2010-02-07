@@ -9,8 +9,8 @@ class Activity
 
   @@activities = {}
 
-  def self.activity_to_load(sym)
-    @@activities[self] = "load_#{sym.to_s.pluralize}".to_sym
+  def self.api_method(sym)
+    @@activities[self] = sym
   end
 
   def self.load_all_activities
@@ -26,7 +26,7 @@ class Activity
     elsif val.is_a?(Symbol)
        klass.send(val)
     else
-       ArgumentError("Bad activity value #{val.inspect} for class #{klass.name}")
+       ArgumentError("bad activity value #{val.inspect} for class #{klass.name}")
     end
   end
 
@@ -46,7 +46,7 @@ class Activity
       url << "?#{@@activities[self][:since]}=#{previous.service_id}" if previous
     end
 
-    logger.debug("Fetching feed at #{url}")
+    logger.debug("fetching feed at #{url}")
     feed = fetch_feed(url)
 
     service_ids = feed.entries.map {|e| service_id(e.id)}
