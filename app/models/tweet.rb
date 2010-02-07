@@ -2,6 +2,8 @@ class Tweet < Activity
   key :twitter_id, String, :required => true
   key :text, String, :required => true
 
+  activity_to_load :tweet
+
   def self.load_tweets
     previous = most_recent_activity
     if previous.present?
