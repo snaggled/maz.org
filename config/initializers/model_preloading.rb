@@ -5,3 +5,4 @@ require 'mongo_mapper'
 
 Tweet.new
 FoursquareCheckin.new
+GoogleLink.new

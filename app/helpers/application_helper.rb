@@ -1,13 +1,13 @@
 module ApplicationHelper
 
   def activity_summary(activity)
-    if activity.respond_to?(:foursquare_id)
+    if activity.is_a?(FoursquareCheckin)
       svc = 'foursquare'
       summary = foursquare_checkin_summary(activity)
-    elsif activity.respond_to?(:twitter_id)
+    elsif activity.is_a?(Tweet)
       svc = 'twitter'
       summary = tweet_summary(activity)
-    elsif activity.respond_to?(:google_id)
+    elsif activity.is_a?(GoogleLink)
       svc = 'google'
       summary = google_link_summary(activity)
     end
