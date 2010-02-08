@@ -29,7 +29,7 @@ class FeedMonster
     elsif val.has_key?(:feed_url)
       fetch_and_store_feed(klass, val[:feed_url], :since_param => val[:feed_since_param])
     else
-       ArgumentError("bad activity value #{val.inspect} for class #{klass.name}")
+       ArgumentError("bad source value #{val.inspect} for class #{klass.name}")
     end
   end
 
@@ -50,8 +50,19 @@ class FeedMonster
 
     feed.entries.each do |entry|
       service_id = service_id(entry.id)
-      klass.create_from_atom(service_id, entry) unless idx.has_key?(service_id)
+      # XXX: update
+      unless idx.has_key?(service_id)
+        activity = new_from_atom(klass, service_id, entry)
+        Rails.logger.debug("creating activity #{activity.service_id}")
+        activity.save!
+      end
     end
+  end
+
+  def self.new_from_atom(klazz, service_id, entry)
+    author = entry.author if entry.author.present? && entry.author !~ /author unknown/i
+    klazz.new(:service_id => service_id, :text => entry.title,
+      :url => entry.url, :author => author, :occurred_at => entry.published)
   end
 
   def self.fetch_feed(url)
