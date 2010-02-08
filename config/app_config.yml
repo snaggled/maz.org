@@ -20,3 +20,7 @@ feed_monster:
       feed:
         url: http://twitter.com/statuses/user_timeline.atom?id=bcm&count=10
         since_param: since_id
+    - name: delicious
+      class_name: Bookmark
+      feed:
+        url: http://feeds.delicious.com/v2/rss/bcm?count=10

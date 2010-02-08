@@ -10,6 +10,9 @@ module ApplicationHelper
     elsif activity.is_a?(GoogleLink)
       svc = 'google'
       summary = google_link_summary(activity)
+    elsif activity.is_a?(Bookmark)
+      svc = 'delicious'
+      summary = bookmark_summary(activity)
     end
 
     if summary
@@ -45,6 +48,11 @@ module ApplicationHelper
     out << " by #{h(link.author)}" if link.author.present?
 
     out
+  end
+
+  def bookmark_summary(bookmark)
+    href = link_to(h(bookmark.text), bookmark.url, :target => 'new')
+    "Bookmarked #{href}"
   end
 
   def occurred_at(dt, options={})

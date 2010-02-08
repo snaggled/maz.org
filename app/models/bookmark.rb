@@ -1,0 +1,2 @@
+class Bookmark < Activity
+end
