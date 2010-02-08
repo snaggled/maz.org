@@ -1,7 +1,7 @@
 class Foursquare::Venue
   include MongoMapper::EmbeddedDocument
 
-  key :service_id, String, :required => true
+  key :service_id, String
   key :name, String
   key :address, String
   key :crossstreet, String
