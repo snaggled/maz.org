@@ -3,7 +3,7 @@ class Tweet < Activity
   key :text, String, :required => true
 
   feed_url "http://twitter.com/statuses/user_timeline.atom?id=bcm&count=10"
-  feed_since 'since_id'
+  feed_since_param 'since_id'
 
 private
   def self.create_from_atom(service_id, entry)
