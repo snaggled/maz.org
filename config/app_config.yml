@@ -8,11 +8,11 @@ foursquare:
 feed_monster:
   sources:
     - name: foursquare
-      class_name: FoursquareCheckin
+      class_name: Checkin
       api:
         method_name: load_checkins
     - name: google_reader
-      class_name: GoogleLink
+      class_name: Link
       feed:
         url: http://www.google.com/reader/public/atom/user/17474520617057440479/state/com.google/broadcast
     - name: twitter

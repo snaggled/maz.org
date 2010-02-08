@@ -1,15 +1,15 @@
 module ApplicationHelper
 
   def activity_summary(activity)
-    if activity.is_a?(FoursquareCheckin)
+    if activity.is_a?(Checkin)
       svc = 'foursquare'
-      summary = foursquare_checkin_summary(activity)
+      summary = checkin_summary(activity)
     elsif activity.is_a?(Tweet)
       svc = 'twitter'
       summary = tweet_summary(activity)
-    elsif activity.is_a?(GoogleLink)
+    elsif activity.is_a?(Link)
       svc = 'google'
-      summary = google_link_summary(activity)
+      summary = link_summary(activity)
     elsif activity.is_a?(Bookmark)
       svc = 'delicious'
       summary = bookmark_summary(activity)
@@ -24,7 +24,7 @@ module ApplicationHelper
     end
   end
 
-  def foursquare_checkin_summary(checkin)
+  def checkin_summary(checkin)
     venue_link = link_to(h(checkin.venue.name), "http://foursquare.com/venue/#{checkin.venue.service_id}",
       :target => '_new', :class => 'foursquare-checkin-venue')
 
@@ -41,7 +41,7 @@ module ApplicationHelper
     "Tweeted \"#{tweet.text}\""
   end
 
-  def google_link_summary(link)
+  def link_summary(link)
     link_href = link_to(h(link.text), link.url, :target => '_new')
 
     out = "Shared #{link_href}"

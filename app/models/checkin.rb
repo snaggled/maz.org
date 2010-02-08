@@ -1,7 +1,39 @@
-class FoursquareCheckin < Activity
+class Foursquare::Venue
+  include MongoMapper::EmbeddedDocument
+
+  key :service_id, String, :required => true
+  key :name, String
+  key :address, String
+  key :crossstreet, String
+  key :city, String
+  key :state, String
+  key :zip, String
+  key :geolat, Float
+  key :geolong, Float
+  key :phone, String
+
+  def self.new_from_fs(v)
+    fv = new
+
+    fv.service_id = v['id']
+    fv.name = v['name']
+    fv.address = v['address']
+    fv.crossstreet = v['crossstreet']
+    fv.city = v['city']
+    fv.state = v['state']
+    fv.zip = v['zip']
+    fv.geolat = v['geolat']
+    fv.geolong = v['geolong']
+    fv.phone = v['phone']
+
+    fv
+  end
+end
+
+class Checkin < Activity
   key :shout, String
   key :venue_id, ObjectId
-  key :venue, FoursquareVenue
+  key :venue, Foursquare::Venue
 
   def self.load_checkins
     previous = most_recent_activity
@@ -45,7 +77,7 @@ private
     service_id = c['id']
     shout = c['shout']
     checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
-    venue = FoursquareVenue.new_from_fs(c['venue']) if c.has_key?('venue')
+    venue = ::Foursquare::Venue.new_from_fs(c['venue']) if c.has_key?('venue')
     logger.debug("creating checkin #{service_id}")
     create!(:service_id => service_id, :shout => shout, :occurred_at => checked_in_at, :venue => venue)
   end
