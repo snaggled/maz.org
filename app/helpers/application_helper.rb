@@ -39,8 +39,12 @@ module ApplicationHelper
   end
 
   def google_link_summary(link)
-    link = link_to(link.text, link.url, :target => '_new')
-    "Shared #{link}"
+    link_href = link_to(link.text, link.url, :target => '_new')
+
+    out = "Shared #{link_href}"
+    out << " by #{h(link.author)}" if link.author.present?
+
+    out
   end
 
   def occurred_at(dt, options={})
