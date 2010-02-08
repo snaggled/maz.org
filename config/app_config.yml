@@ -4,3 +4,19 @@ google:
 foursquare:
   user: bcm@maz.org
   password: @replace@
+
+feed_monster:
+  sources:
+    - name: foursquare
+      class_name: FoursquareCheckin
+      api:
+        method_name: load_checkins
+    - name: google_reader
+      class_name: GoogleLink
+      feed:
+        url: http://www.google.com/reader/public/atom/user/17474520617057440479/state/com.google/broadcast
+    - name: twitter
+      class_name: Tweet
+      feed:
+        url: http://twitter.com/statuses/user_timeline.atom?id=bcm&count=10
+        since_param: since_id

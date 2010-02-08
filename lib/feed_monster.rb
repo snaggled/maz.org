@@ -1,42 +1,44 @@
 class FeedMonster
-  @@sources = {}
-
-  def self.api_method(klass, sym)
-    @@sources[klass] ||= {}
-    @@sources[klass][:api_method] = sym
-  end
-
-  def self.feed_url(klass, url)
-    @@sources[klass] ||= {}
-    @@sources[klass][:feed_url] = url
-  end
-
-  def self.feed_since_param(klass, param)
-    @@sources[klass] ||= {}
-    @@sources[klass][:feed_since_param] = param.to_s
-  end
-
   def self.load_from_all_sources
-    @@sources.each_pair do |klass, val|
-      load_from_source(klass, val)
+    AppConfig.feed_monster.sources.each do |source|
+      load_from_source(source)
     end
   end
 
-  def self.load_from_source(klass, val=nil)
-    val ||= @@sources[klass]
-    if val.has_key?(:api_method)
-      klass.send(val[:api_method])
-    elsif val.has_key?(:feed_url)
-      fetch_and_store_feed(klass, val[:feed_url], :since_param => val[:feed_since_param])
-    else
-       ArgumentError("bad source value #{val.inspect} for class #{klass.name}")
+  def self.load_from_named_source(name)
+    found = false
+    AppConfig.feed_monster.sources.each do |source|
+      next unless source.name == name.to_s
+      load_from_source(source)
+      found = true
+      break
     end
+    raise "No source named #{name}" unless found
+  end
+
+private
+  def self.load_from_source(source)
+    klass = source.class_name.constantize
+    if optional_config_entry(source, :feed).present?
+      since_param = optional_config_entry(source.feed, :since_param)
+      fetch_and_store_feed(klass, source.feed.url, :since_param => since_param)
+    elsif optional_config_entry(source, :api).present?
+      klass.send(source.api.method_name.to_sym)
+    else
+      raise "#{source.class_name} source has neither api nor feed config"
+    end
+  end
+
+  def self.optional_config_entry(data, field)
+    data.send(field.to_sym)
+  rescue NoMethodError
+    nil
   end
 
   def self.fetch_and_store_feed(klass, url, options={})
-    if options.has_key?(:feed_since_param)
+    if options[:since_param].present?
       previous = klass.most_recent_activity
-      url << "?#{options[:feed_since_param]}=#{previous.service_id}" if previous
+      url << "?#{options[:since_param]}=#{previous.service_id}" if previous
     end
 
     Rails.logger.debug("fetching feed at #{url}")

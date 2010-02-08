@@ -3,8 +3,6 @@ class FoursquareCheckin < Activity
   key :venue_id, ObjectId
   key :venue, FoursquareVenue
 
-  api_method :load_checkins
-
   def self.load_checkins
     previous = most_recent_activity
     if previous.present?
