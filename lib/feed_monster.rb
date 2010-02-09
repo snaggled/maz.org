@@ -63,7 +63,7 @@ private
 
   def self.new_from_atom(klazz, service_id, entry)
     author = entry.author if entry.author.present? && entry.author !~ /author unknown/i
-    klazz.new(:service_id => service_id, :text => entry.title,
+    klazz.new(:service_id => service_id, :text => CGI::unescapeHTML(entry.title),
       :url => entry.url, :author => author, :occurred_at => entry.published)
   end
 

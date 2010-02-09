@@ -32,7 +32,7 @@ module ApplicationHelper
       :class => 'foursquare-checkin-location')
 
     out = "Checked in at #{venue_link} in #{venue_location}"
-    out << " (#{checkin.shout})" if checkin.shout.present?
+    out << " with \"#{checkin.shout}\"" if checkin.shout.present?
 
     out
   end
