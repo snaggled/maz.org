@@ -1,0 +1,2 @@
+class Tumblog < Activity
+end

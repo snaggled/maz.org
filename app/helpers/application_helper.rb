@@ -1,6 +1,7 @@
 module ApplicationHelper
 
   def activity_summary(activity)
+    fmt = :ico
     if activity.is_a?(Checkin)
       svc = 'foursquare'
       summary = checkin_summary(activity)
@@ -13,15 +14,24 @@ module ApplicationHelper
     elsif activity.is_a?(Bookmark)
       svc = 'delicious'
       summary = bookmark_summary(activity)
+    elsif activity.is_a?(Tumblog)
+      svc = 'tumblr'
+      fmt = :gif
+      summary = tumblog_summary(activity)
     end
 
     if summary
-      icon = image_tag("icons/#{svc}.ico", :size => '16x16', :class => 'activity-icon')
+      icon = icon_tag(svc, :fmt => fmt)
       at = content_tag(:span, "at #{occurred_at(activity.occurred_at)}", :class => 'small')
       [icon, summary, at].join(' ')
     else
       ""
     end
+  end
+
+  def icon_tag(svc, options={})
+    fmt = options.delete(:fmt) || :ico
+    image_tag("icons/#{svc}.#{fmt}", :size => '16x16', :class => 'activity-icon')
   end
 
   def checkin_summary(checkin)
@@ -51,8 +61,13 @@ module ApplicationHelper
   end
 
   def bookmark_summary(bookmark)
-    href = link_to(h(bookmark.text), bookmark.url, :target => 'new')
+    href = link_to(h(bookmark.text), bookmark.url, :target => '_new')
     "Bookmarked #{href}"
+  end
+
+  def tumblog_summary(tumblog)
+    href = link_to(h(tumblog.text), tumblog.url, :target => '_new')
+    "Wrote #{href}"
   end
 
   def occurred_at(dt, options={})

@@ -24,3 +24,8 @@ feed_monster:
       class_name: Bookmark
       feed:
         url: http://feeds.delicious.com/v2/rss/bcm?count=10
+    - name: tumblr
+      class_name: Tumblog
+      feed:
+        url: http://bcm.tumblr.com/rss
+
