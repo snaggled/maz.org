@@ -28,4 +28,8 @@ feed_monster:
       class_name: Tumblog
       feed:
         url: http://bcm.tumblr.com/rss
+    - name: youtube
+      class_name: Video
+      feed:
+        url: http://gdata.youtube.com/feeds/base/users/bmoseley/favorites
 

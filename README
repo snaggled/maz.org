@@ -9,9 +9,15 @@ Services to add:
 * Netflix
 * Yelp?
 * Goodreads
+* Buzz - http://code.google.com/apis/buzz/documentation/
 
 Features to add:
 
 * Conditional method support for feed fetching
 * Preview urls in Tweets
 * Lightbox or otherwise display blog posts
+* Popout video players
+* Audio players
+* PubSubHubbub for those services that support it
+* Activity feed
+* Replace Foursquare API with feed

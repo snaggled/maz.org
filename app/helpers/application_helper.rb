@@ -18,6 +18,9 @@ module ApplicationHelper
       svc = 'tumblr'
       fmt = :gif
       summary = tumblog_summary(activity)
+    elsif activity.is_a?(Video)
+      svc = 'youtube'
+      summary = video_summary(activity)
     end
 
     if summary
@@ -68,6 +71,11 @@ module ApplicationHelper
   def tumblog_summary(tumblog)
     href = link_to(h(tumblog.text), tumblog.url, :target => '_new')
     "Wrote #{href}"
+  end
+
+  def video_summary(video)
+    href = link_to(h(video.text), video.url, :target => '_new')
+    "Favorited #{href}"
   end
 
   def occurred_at(dt, options={})

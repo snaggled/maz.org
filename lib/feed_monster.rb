@@ -55,8 +55,10 @@ private
       # XXX: update
       unless idx.has_key?(service_id)
         activity = new_from_atom(klass, service_id, entry)
-        Rails.logger.debug("creating activity #{activity.service_id}")
-        activity.save!
+        if activity.present?
+          Rails.logger.debug("creating activity #{activity.service_id}")
+          activity.save!
+        end
       end
     end
   end
