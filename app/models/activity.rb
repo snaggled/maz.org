@@ -11,7 +11,7 @@ class Activity
     first(:order => 'occurred_at DESC')
   end
 
-  def self.activity_stream
-    all(:order => 'occurred_at DESC', :limit => 25)
+  def self.activity_stream(limit=25)
+    all(:order => 'occurred_at DESC', :limit => limit)
   end
 end
