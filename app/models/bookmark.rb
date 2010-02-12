@@ -1,2 +1,2 @@
-class Bookmark < Activity
+class Bookmark < FeedActivity
 end

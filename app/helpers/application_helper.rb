@@ -21,6 +21,9 @@ module ApplicationHelper
     elsif activity.is_a?(Video)
       svc = 'youtube'
       summary = video_summary(activity)
+    elsif activity.is_a?(Photo)
+      svc = 'flickr'
+      summary = photo_summary(activity)
     end
 
     if summary
@@ -76,6 +79,16 @@ module ApplicationHelper
   def video_summary(video)
     href = link_to(h(video.text), video.url, :target => '_new')
     "Favorited #{href}"
+  end
+
+  def photo_summary(photo)
+    if photo.text.present?
+      caption = photo.text
+    else
+      caption = "uncaptioned photo"
+    end
+    href = link_to(caption, photo.url, :target => '_new')
+    "Uploaded #{href}"
   end
 
   def occurred_at(dt, options={})

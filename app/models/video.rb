@@ -1,4 +1,4 @@
-class Video < Activity
+class Video < FeedActivity
   before_save :tweak_occurred_at
 
   # YouTube reports publication date as when the video was uploaded, not

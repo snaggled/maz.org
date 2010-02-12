@@ -1,4 +1,4 @@
-class Tweet < Activity
+class Tweet < FeedActivity
   before_save :trim_text
 
   def trim_text

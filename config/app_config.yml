@@ -32,4 +32,7 @@ feed_monster:
       class_name: Video
       feed:
         url: http://gdata.youtube.com/feeds/base/users/bmoseley/favorites
-
+    - name: flickr
+      class_name: Photo
+      feed:
+        url: http://api.flickr.com/services/feeds/photos_public.gne?id=20674645@N00&lang=en-us&format=rss_200

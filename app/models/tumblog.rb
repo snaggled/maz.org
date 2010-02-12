@@ -1,2 +1,2 @@
-class Tumblog < Activity
+class Tumblog < FeedActivity
 end
