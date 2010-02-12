@@ -1,1 +1,17 @@
 I'm Brian. This is the source code for my web site.
+
+Services to add:
+
+* Flickr
+* YouTube
+* Last.fm
+* LinkedIn?
+* Netflix
+* Yelp?
+* Goodreads
+
+Features to add:
+
+* Conditional method support for feed fetching
+* Preview urls in Tweets
+* Lightbox or otherwise display blog posts
