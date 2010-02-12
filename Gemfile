@@ -6,13 +6,13 @@ gem "viva-app_config", "1.2.0"
 gem "feedzirra"
 
 # mongo
-gem "mongo", "0.18.2"
-gem "mongo_ext", "0.18.2"
+gem "mongo", "0.18.3"
+gem "mongo_ext", "0.18.3"
 gem "jnunemaker-validatable", "1.8.1"
-gem "mongomapper", "0.6.10", :path => '../mongomapper'
+gem "mongo_mapper", "0.7.0"
 
 # foursquare
-gem "foursquare", "0.1.0", :path => '../Foursquare'
+gem "foursquare", "0.2.0"
 
 # cron
 gem "whenever", "0.4.1"
