@@ -1,3 +1,5 @@
+.bundle
+Gemfile.lock
 build_options.yml
 bin/*
 db/*.sqlite3
@@ -5,6 +7,6 @@ tmp/**/*
 tmp/restart.txt
 log/*.log
 config/database.yml
-config/environments/development.yml
+config/environments/*.yml
 vendor/bundler_gems/*
 !vendor/bundler_gems/ruby/1.8/cache/
