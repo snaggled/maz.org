@@ -43,6 +43,10 @@ private
 
     Rails.logger.debug("fetching feed at #{url}")
     feed = fetch_feed(url)
+    unless feed.respond_to?(:entries) then
+      Rails.logger.warn("#{klass.name} feed returned #{feed.inspect} - skipping")
+      return
+    end
 
     service_ids = feed.entries.map {|e| service_id(e.id)}
     idx = {}
