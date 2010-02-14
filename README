@@ -11,6 +11,7 @@ Services to add:
 
 Features to add:
 
+* Exception notification
 * Conditional method support for feed fetching
 * Preview urls in Tweets
 * Lightbox or otherwise display blog posts
