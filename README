@@ -1,4 +1,5 @@
-I'm Brian. This is the source code for my web site.
+I'm Brian. This is the source code for my web site. It's essentially my own
+custom feed aggregator.
 
 Services to add:
 
@@ -17,6 +18,17 @@ Features to add:
 * Lightbox or otherwise display blog posts
 * Popout video players
 * Audio players
-* PubSubHubbub for those services that support it
 * Activity feed
 * Replace Foursquare API with feed
+* Add updates to the stream without having to refresh the page
+  * WebSockets
+  * Long-polling Comet with node.js?
+* Incorporate new activities into the database as they occur without having
+  to constantly poll feeds
+  * PubSubHubbub
+* Search across activities
+* Page through older activities
+
+Bugs to fix:
+
+* Pub date of Reader shared link is the pub date of the page, not when i shared it
