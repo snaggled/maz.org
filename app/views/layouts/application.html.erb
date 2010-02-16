@@ -10,19 +10,7 @@
     <%= stylesheet_link_tag 'blueprint/print', :media => 'print' %>
     <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie',
                           :media => 'screen, projection' %><![endif]-->
-    <script type="text/javascript" src="http://www.google.com/jsapi?key=<%=h AppConfig.google.api_key %>"></script>
-    <% javascript_tag do %>
-      google.load("jquery", "1.3.2");
-      google.load("jqueryui", "1.7.2");
-    <% end %>
-    <%= javascript_include_tag 'application' %>
     <title>maz.org</title>
-    <%= yield :head %>
-    <% javascript_tag do %>
-      $(function() {
-      <%= yield :script %>
-      });
-    <% end %>
   </head>
   <body>
     <div id="header" class="container">
