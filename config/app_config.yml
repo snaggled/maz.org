@@ -9,6 +9,8 @@ feed_monster:
   sources:
     - name: foursquare
       class_name: Checkin
+#      feed:
+#        url: http://feeds.foursquare.com/history/2a5ca48c03859a8abbf2cc358411893c.rss
       api:
         method_name: load_checkins
     - name: google_reader

@@ -11,7 +11,7 @@ gem "jnunemaker-validatable", "1.8.1", :require => nil
 gem "mongo_mapper", "0.7.0"
 
 # foursquare
-gem "foursquare", "0.2.0"
+gem "foursquare", "0.2.1"
 
 # cron
 gem "whenever", "0.4.1"
