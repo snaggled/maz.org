@@ -1,4 +1,4 @@
-class Foursquare::Venue
+class CheckinVenue
   include MongoMapper::EmbeddedDocument
 
   key :service_id, String
@@ -33,7 +33,7 @@ end
 class Checkin < Activity
   key :shout, String
   key :venue_id, ObjectId
-  key :venue, Foursquare::Venue
+  key :venue, CheckinVenue
 
   def self.load_checkins
     previous = most_recent_activity
@@ -77,7 +77,7 @@ private
     service_id = c['id']
     shout = c['shout']
     checked_in_at = DateTime::parse(c['created']) if c.has_key?('created')
-    venue = ::Foursquare::Venue.new_from_fs(c['venue']) if c.has_key?('venue')
+    venue = CheckinVenue.new_from_fs(c['venue']) if c.has_key?('venue')
     logger.debug("creating checkin #{service_id}")
     create!(:service_id => service_id, :shout => shout, :occurred_at => checked_in_at, :venue => venue)
   end
