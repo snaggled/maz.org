@@ -1,7 +1,12 @@
-I'm Brian. This is the source code for my web site. It's essentially my own
-custom feed aggregator.
+I'm Brian. This is the source code for my web site.
 
-Services to add:
+h2. How it works
+
+The feed aggregator ("feed monster", a name stolen from my "employer":http://outside.in) that hits a number of services every 15 minutes, either fetching an Atom or RSS feed or using a custom API, depending on the service. Whatever data is pulled down gets dumped into a "MongoDB":http://mongodb.org collection, normalized as "activities".
+
+The Rails front end just pulls the most recent 30 activities from the collection and shows them in reverse chronological order. Rails is way overkill for this, but part of the exercise was learning how to use "MongoMapper":http://mongomapper.com.
+
+h2. Services to add
 
 * Last.fm
 * LinkedIn?
@@ -10,7 +15,7 @@ Services to add:
 * Goodreads
 * Buzz - http://code.google.com/apis/buzz/documentation/
 
-Features to add:
+h2. Features to add
 
 * Exception notification
 * Conditional method support for feed fetching
@@ -29,6 +34,6 @@ Features to add:
 * Search across activities
 * Page through older activities
 
-Bugs to fix:
+h2. Bugs to fix
 
 * Pub date of Reader shared link is the pub date of the page, not when i shared it
