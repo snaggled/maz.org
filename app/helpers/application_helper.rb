@@ -28,8 +28,8 @@ module ApplicationHelper
 
     if summary
       icon = icon_tag(svc, :fmt => fmt)
-      at = content_tag(:span, "at #{occurred_at(activity.occurred_at)}", :class => 'small')
-      [icon, summary, at].join(' ')
+      at = content_tag(:span, "at #{occurred_at(activity.occurred_at)}".html_safe, :class => 'small')
+      [icon, summary, at].join(' ').html_safe
     else
       ""
     end
@@ -50,7 +50,7 @@ module ApplicationHelper
     out = "Checked in at #{venue_link} in #{venue_location}"
     out << " with \"#{checkin.shout}\"" if checkin.shout.present?
 
-    out
+    out.html_safe
   end
 
   def tweet_summary(tweet)
@@ -63,22 +63,22 @@ module ApplicationHelper
     out = "Shared #{link_href}"
     out << " by #{h(link.author)}" if link.author.present?
 
-    out
+    out.html_safe
   end
 
   def bookmark_summary(bookmark)
     href = link_to(h(bookmark.text), bookmark.url, :target => '_new')
-    "Bookmarked #{href}"
+    "Bookmarked #{href}".html_safe
   end
 
   def tumblog_summary(tumblog)
     href = link_to(h(tumblog.text), tumblog.url, :target => '_new')
-    "Wrote #{href}"
+    "Wrote #{href}".html_safe
   end
 
   def video_summary(video)
     href = link_to(h(video.text), video.url, :target => '_new')
-    "Favorited #{href}"
+    "Favorited #{href}".html_safe
   end
 
   def photo_summary(photo)
@@ -88,13 +88,13 @@ module ApplicationHelper
       caption = "uncaptioned photo"
     end
     href = link_to(caption, photo.url, :target => '_new')
-    "Uploaded #{href}"
+    "Uploaded #{href}".html_safe
   end
 
   def occurred_at(dt, options={})
     # 6:29 pm on Sat, Jan 23rd
     t = dt.strftime("%I:%M %p").gsub(/^0(\d)/, '\1').downcase
     d = dt.strftime("%a, %b #{dt.day.ordinalize}")
-    content_tag(:span, "#{t} on #{d}", :class => 'occurred-at')
+    content_tag(:span, "#{t} on #{d}", :class => 'occurred-at').html_safe
   end
 end

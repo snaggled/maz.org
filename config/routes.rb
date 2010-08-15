@@ -1,6 +1,3 @@
-ActionController::Routing::Routes.draw do |map|
-  map.with_options :controller => 'home' do |home|
-    home.root
-    home.activities 'activities', :action => 'activities'
-  end
+MazOrg::Application.routes.draw do |map|
+  root :to => 'home#index'
 end
