@@ -14,8 +14,8 @@ set :use_sudo, false
 # XXX: symlink shared/stuff into public
 
 after "deploy:update_code", "deploy:unpack"
-after "deploy:update_code", "deploy:update_config"
-after "deploy:update_code", "deploy:update_stuff"
+after "deploy", "deploy:update_config"
+after "deploy", "deploy:update_stuff"
 after "deploy", "deploy:cleanup"
 
 namespace :deploy do
