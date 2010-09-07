@@ -1,6 +1,6 @@
 set :application, "maz.org"
 set :repository,  "git@github.com:bcm/maz.org.git"
-set :deploy_to, "/var/www/maz"
+set :deploy_to, "/var/www/maz.org"
 
 role :web, "maz.org"
 role :app, "maz.org"
@@ -15,6 +15,7 @@ set :use_sudo, false
 # XXX: symlink shared/production.yml into config/environments
 
 after "deploy:update_code", "deploy:unpack"
+after "deploy", "deploy:cleanup"
 
 namespace :deploy do
   desc 'Unpack bundled gem dependencies'
