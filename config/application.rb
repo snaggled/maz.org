@@ -14,5 +14,6 @@ module MazOrg
     config.time_zone = 'Eastern Time (US & Canada)'
     config.i18n.default_locale = :en
     config.encoding = "utf-8"
+    config.active_support.deprecation = :log
   end
 end
