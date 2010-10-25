@@ -1,3 +1,3 @@
-MazOrg::Application.routes.draw do |map|
+MazOrg::Application.routes.draw do
   root :to => 'home#index'
 end
