@@ -1,5 +1,11 @@
 <ul id="activity-stream">
   <% @activities.each do |activity| %>
-    <li id="<%=h activity.id %>"><%= activity_summary(activity) %></li>
+    <%= activity_summary(activity) do |svc, fmt, summary| %>
+      <li id="<%=h activity.id %>">
+        <%= icon_tag(svc, fmt) %>
+        <%= summary %>
+        <span class="small"><%= time_ago_in_words(activity.occurred_at) %> ago</span>
+      </li>
+    <% end %>
   <% end %>
 </ul>

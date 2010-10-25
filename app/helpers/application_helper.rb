@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def activity_summary(activity)
+  def activity_summary(activity, &block)
     fmt = :ico
     if activity.is_a?(Checkin)
       svc = 'foursquare'
@@ -26,18 +26,13 @@ module ApplicationHelper
       summary = photo_summary(activity)
     end
 
-    if summary
-      icon = icon_tag(svc, :fmt => fmt)
-      at = content_tag(:span, "at #{occurred_at(activity.occurred_at)}".html_safe, :class => 'small')
-      [icon, summary, at].join(' ').html_safe
-    else
-      ""
-    end
+    yield(svc, fmt, summary) if summary
+
+    ''
   end
 
-  def icon_tag(svc, options={})
-    fmt = options.delete(:fmt) || :ico
-    image_tag("icons/#{svc}.#{fmt}", :size => '16x16', :class => 'activity-icon')
+  def icon_tag(svc, fmt = :ico, options = {})
+    image_tag("icons/#{svc}.#{fmt}", {:size => '16x16', :class => 'activity-icon'}.merge(options))
   end
 
   def checkin_summary(checkin)

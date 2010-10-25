@@ -1,3 +1,7 @@
+mongo:
+  host: 127.0.0.1
+  port: 27017
+
 google:
   api_key: none
 
@@ -6,7 +10,6 @@ foursquare:
   oauth_secret: none
   access_token: none
   access_secret: none
-
 
 feed_monster:
   sources:

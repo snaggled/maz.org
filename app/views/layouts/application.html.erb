@@ -1,29 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <%= stylesheet_link_tag 'base' %>
-    <%= stylesheet_link_tag 'blueprint/screen',
-                             :media => 'screen, projection' %>
+    <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen, projection' %>
     <%= stylesheet_link_tag 'blueprint/print', :media => 'print' %>
-    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie',
-                          :media => 'screen, projection' %><![endif]-->
+    <!--[if lt IE 8]><%= stylesheet_link_tag 'blueprint/ie', :media => 'screen, projection' %><![endif]-->
+    <%= stylesheet_link_tag 'base' %>
     <title>maz.org</title>
   </head>
   <body>
-    <div id="header" class="container">
-      <h1>maz.org</h1>
-    </div>
     <div class="container">
-      <%= yield %>
+      <div class="span-24 last">
+        <h1>maz.org</h1>
+      </div>
+      <div class="span-24 last">
+        <%= yield %>
+      </div>
+      <div class="span-24 last">
+        <p>
+          Brian Moseley - Brooklyn, NY - <a href="mailto:bcm@maz.org">bcm@maz.org</a>
+        </p>
+      </div>
     </div>
-    <div id="footer" class="container">
-      <p>
-        <address><a href="mailto:bcm@maz.org">bcm@maz.org</a></address>
-      </p>
-    </div>
-    <script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol) ?"https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script><script type="text/javascript">try { var pageTracker = _gat._getTracker("UA-12398615-2"); pageTracker._trackPageview(); } catch(err) {}</script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ?"https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost +
+        "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-12398615-2");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
   </body>
 </html>

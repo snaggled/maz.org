@@ -1,8 +1,13 @@
-.highlight {
-  background:#ff0;
-}
-
 img.activity-icon {
   vertical-align: middle;
   margin-right: 5px;
+}
+
+ul#activity-stream {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+ul#activity-stream li {
+  margin: 0 0 1em 25px;
 }

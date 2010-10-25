@@ -1,5 +1,12 @@
 require 'mongo_mapper'
 
-MongoMapper.database = 'maz'
-MongoMapper.connection = Mongo::Connection.new('127.0.0.1', 27017,
-  :logger => Rails.logger)
+host = AppConfig.mongo.host
+port = AppConfig.mongo.port
+
+begin
+  MongoMapper.database = 'maz'
+  MongoMapper.connection = Mongo::Connection.new(host, port, :logger => Rails.logger)
+  Rails.logger.info("Connected to mongo on #{host}:#{port}")
+rescue Mongo::ConnectionFailure => e
+  Rails.logger.warn("Unable to connect to mongo on #{host}:#{port}")
+end
