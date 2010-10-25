@@ -1,11 +1,24 @@
-<ul id="activity-stream">
-  <% @activities.each do |activity| %>
-    <%= activity_summary(activity) do |svc, fmt, summary| %>
-      <li id="<%=h activity.id %>">
-        <%= icon_tag(svc, fmt) %>
-        <%= summary %>
-        <span class="small"><%= time_ago_in_words(activity.occurred_at) %> ago</span>
-      </li>
+<div class="span-24 last">
+  <h1>Brian Moseley</h1>
+</div>
+
+<div class="span-24 last">
+  <ul id="activity-stream">
+    <% @activities.each do |activity| %>
+      <%= activity_summary(activity) do |svc, fmt, summary| %>
+        <li id="<%=h activity.id %>">
+          <%= icon_tag(svc, fmt) %>
+          <%= summary %>
+          <span class="small"><%= time_ago_in_words(activity.occurred_at) %> ago</span>
+        </li>
+      <% end %>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
+</div>
+
+<div class="span-24 last">
+  <p>
+    <a href="mailto:bcm@maz.org">bcm@maz.org</a> - Brooklyn, NY
+  </p>
+</div>
+
