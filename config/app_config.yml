@@ -42,3 +42,7 @@ feed_monster:
       class_name: Photo
       feed:
         url: http://api.flickr.com/services/feeds/photos_public.gne?id=20674645@N00&lang=en-us&format=rss_200
+    - name: github
+      class_name: Commit
+      feed:
+        url: http://github.com/bcm.atom

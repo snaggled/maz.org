@@ -24,6 +24,9 @@ module ApplicationHelper
     elsif activity.is_a?(Photo)
       svc = 'flickr'
       summary = photo_summary(activity)
+    elsif activity.is_a?(Commit)
+      svc = 'github'
+      summary = commit_summary(activity)
     end
 
     yield(svc, fmt, summary) if summary
@@ -86,10 +89,7 @@ module ApplicationHelper
     "Uploaded #{href}".html_safe
   end
 
-  def occurred_at(dt, options={})
-    # 6:29 pm on Sat, Jan 23rd
-    t = dt.strftime("%I:%M %p").gsub(/^0(\d)/, '\1').downcase
-    d = dt.strftime("%a, %b #{dt.day.ordinalize}")
-    content_tag(:span, "#{t} on #{d}", :class => 'occurred-at').html_safe
+  def commit_summary(commit)
+    link_to(commit.text, commit.url, :target => 'new').html_safe
   end
 end

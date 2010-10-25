@@ -48,37 +48,27 @@ private
       return
     end
 
-    service_ids = feed.entries.map {|e| service_id(e.id)}
+    service_ids = feed.entries.map {|e| klass.service_id(e)}
     idx = {}
     klass.all(:service_id.in => service_ids).each do |link|
       idx[link.service_id] = link
     end
 
     feed.entries.each do |entry|
-      service_id = service_id(entry.id)
+      service_id = klass.service_id(entry)
       # XXX: update
       unless idx.has_key?(service_id)
-        activity = new_from_atom(klass, service_id, entry)
+        activity = klass.create_from_atom(service_id, entry)
         if activity.present?
-          Rails.logger.debug("creating activity #{activity.service_id}")
+          Rails.logger.debug("saving activity #{activity.service_id}")
           activity.save!
         end
       end
     end
   end
 
-  def self.new_from_atom(klazz, service_id, entry)
-    author = entry.author if entry.author.present? && entry.author !~ /author unknown/i
-    klazz.new(:service_id => service_id, :text => CGI::unescapeHTML(entry.title),
-      :url => entry.url, :author => author, :occurred_at => entry.published)
-  end
-
   def self.fetch_feed(url)
     # XXX: store and send etag and last-modified
     Feedzirra::Feed.fetch_and_parse(url, :user_agent => 'maz.org')
-  end
-
-  def self.service_id(entry_id)
-    entry_id.split(/\//).last
   end
 end

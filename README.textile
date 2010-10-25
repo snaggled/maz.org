@@ -4,7 +4,7 @@ h2. How it works
 
 The feed aggregator ("feed monster", a name stolen from my "employer":http://outside.in) that hits a number of services every 15 minutes, either fetching an Atom or RSS feed or using a custom API, depending on the service. Whatever data is pulled down gets dumped into a "MongoDB":http://mongodb.org collection, normalized as "activities".
 
-The Rails front end just pulls the most recent 30 activities from the collection and shows them in reverse chronological order. Rails is way overkill for this, but part of the exercise was learning how to use "MongoMapper":http://mongomapper.com.
+The Rails front end just pulls the most recent activities from the collection and shows them in reverse chronological order. Rails is way overkill for this, but part of the exercise was learning how to use "MongoMapper":http://mongomapper.com.
 
 h2. Services to add
 
@@ -24,7 +24,6 @@ h2. Features to add
 * Popout video players
 * Audio players
 * Activity feed
-* Replace Foursquare API with feed
 * Add updates to the stream without having to refresh the page
   * WebSockets
   * Long-polling Comet with node.js?
@@ -36,4 +35,4 @@ h2. Features to add
 
 h2. Bugs to fix
 
-* Pub date of Reader shared link is the pub date of the page, not when i shared it
+* Pub date of Reader shared link is the pub date of the page, not when I shared it
