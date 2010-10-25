@@ -1,3 +1,5 @@
 foursquare:
-  user: bcm@maz.org
-  password: woot
+  oauth_key: replace
+  oauth_secret: replace
+  access_token: replace
+  access_secret: replace

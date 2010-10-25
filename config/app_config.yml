@@ -2,15 +2,16 @@ google:
   api_key: none
 
 foursquare:
-  user: bcm@maz.org
-  password: @replace@
+  oauth_key: none
+  oauth_secret: none
+  access_token: none
+  access_secret: none
+
 
 feed_monster:
   sources:
     - name: foursquare
       class_name: Checkin
-#      feed:
-#        url: http://feeds.foursquare.com/history/2a5ca48c03859a8abbf2cc358411893c.rss
       api:
         method_name: load_checkins
     - name: google_reader

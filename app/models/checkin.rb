@@ -46,9 +46,10 @@ class Checkin < Activity
 
 private
   def self.history(options={})
-    client = Foursquare.new(AppConfig.foursquare.user,
-      AppConfig.foursquare.password, :headers => {'User-Agent', 'maz.org'})
-    client.history(options)
+    oauth = Foursquare::OAuth.new(AppConfig.foursquare.oauth_key, AppConfig.foursquare.oauth_secret)
+    oauth.authorize_from_access(AppConfig.foursquare.access_token, AppConfig.foursquare.access_secret)
+    foursquare = Foursquare::Base.new(oauth)
+    foursquare.history(options)
   end
 
   def self.pull_in_all_checkins
@@ -61,14 +62,8 @@ private
     store_checkins(history(:sinceid => sinceid))
   end
 
-  def self.store_checkins(api_response)
-    return if ! api_response.has_key?('checkins') ||
-      api_response['checkins'].nil?
-
-    api_checkins = api_response['checkins']['checkin']
-    api_checkins = [api_checkins] unless api_checkins.is_a?(Array)
-
-    api_checkins.each do |c|
+  def self.store_checkins(checkins)
+    checkins.each do |c|
       create_from_fs(c)
     end
   end
